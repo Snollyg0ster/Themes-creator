@@ -1,24 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Farewell, TabInfo } from './models';
+import { sendTabMessage } from './utils';
 
 function App() {
+
+  const makeMagic = () => {
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => 
+      tabs[0]?.id && sendTabMessage<TabInfo, Farewell>(tabs[0].id, 'tabInfo',{title: tabs[0].title}, (response) => {
+          console.log(response.farewell);
+        }
+      )
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      test label WOW
+      <button onClick={makeMagic}>ебашь</button>
     </div>
   );
 }
