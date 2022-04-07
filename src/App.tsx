@@ -1,12 +1,11 @@
-import React, { ChangeEvent, CSSProperties, EventHandler, useState } from 'react';
+import SelectorEditor from './components/SelectorEditor';
 import { Farewell, TabInfo } from './models';
 import { makeStyles, sendTabMessage } from './utils';
-
-const selectorTypes: string[] = ['id', 'class' ]
+import reset from './assets/img/reset.png'
+import { useState } from 'react';
 
 function App() {
-  const [selectorType, setSelectorType] = useState(selectorTypes[0]);
-  const [selector, setSelector] = useState('');
+  const [visible, setVisible] = useState(true);
 
   const makeMagic = () => {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
@@ -19,23 +18,28 @@ function App() {
     );
   }
 
-  const handleSelectorType = (event: ChangeEvent<HTMLSelectElement>) => setSelectorType(event.target.value)
-
-  const handleSelector = (event: ChangeEvent<HTMLInputElement>) => setSelector(event.target.value)
+  const resetAll = () => {
+    setVisible(false),
+    setTimeout(() => setVisible(true))
+  }
 
   const styles = useStyles();
 
   return (
-    <div style={styles.root}>
-      <h3>Lets make something!</h3>
-      <select value={selectorType} onChange={handleSelectorType} style={styles.select}>
-        {selectorTypes.map(selector => <option value={selector}>{selector}</option>)}
-      </select>
-      <input value={selector} onChange={handleSelector}/>
-      <button onClick={makeMagic} style={styles.button}>
-        <h3 style={styles.switch}>Switch</h3>(let some magic happen)
-      </button>
-    </div>
+    <>
+      { visible &&
+        <div style={styles.root}>
+          <button style={styles.resetButton} onClick={resetAll}>
+            <img alt="reset" src={reset} style={styles.reset}/>
+          </button>
+          <h3>Lets make something!</h3>
+          <SelectorEditor />
+          <button onClick={makeMagic} style={styles.button}>
+            <h3 style={styles.switch}>Switch</h3>(let some magic happen)
+          </button>
+        </div>
+      }
+    </>
   );
 }
 
@@ -43,10 +47,20 @@ const useStyles = makeStyles({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: '5px 15px',
+    position: 'relative',
   },
-  select: {
-    marginBottom: 10,
+  resetButton: {
+    background: 'transparent',
+    borderWidth: 0,
+    position: 'absolute',
+    left: -3,
+    opacity: 0.7,
+  },
+  reset: {
+    height: 15,
+    width: 15
   },
   button: {
     height: 40,
@@ -59,8 +73,8 @@ const useStyles = makeStyles({
     backgroundColor: 'gray',
     borderWidth: 0,
     borderRadius: 7,
-    margin: 10,
-    lineHeight: 0
+    lineHeight: 0,
+    marginTop: 20,
   },
   switch: {
     marginTop: -2,
