@@ -1,9 +1,15 @@
 import { ChangeEvent, useMemo, useState } from "react";
+import { Selector } from "../../models";
 import { makeStyles } from '../../utils';
 
 const selectorTypes: string[] = ['id', 'class' ]
 
-const SelectorEditor = () => {
+interface Props {
+  addSelector: (selector: Selector) => void
+}
+
+const SelectorEditor = (props: Props) => {
+  const { addSelector } = props;
   const [selectorType, setSelectorType] = useState<string>('default');
   const [selector, setSelector] = useState('');
   const [color, setColor] = useState('');
@@ -18,6 +24,8 @@ const SelectorEditor = () => {
 
   const handleColor = (event: ChangeEvent<HTMLInputElement>) => setColor(event.target.value)
 
+  const handleNewSelector = () => addSelector({color, selector, selectorType})
+
   const styles = useStyles();
 
   return (
@@ -30,7 +38,7 @@ const SelectorEditor = () => {
       <div style={styles.editCont}>
         <input value={selector} onChange={handleSelector} placeholder="selector" style={styles.selectorInput}/>
         <input value={color} onChange={handleColor} placeholder="color" style={styles.colorInput}/>
-        <button style={styles.colorInput} disabled={isDisabled}>+</button>
+        <button style={styles.button} disabled={isDisabled} onClick={handleNewSelector}>+</button>
       </div>
     </div>
   )
@@ -61,6 +69,7 @@ const useStyles = makeStyles({
   },
   editCont: {
     display: 'flex',
+    justifyContent: 'space-between',
   },
   selectorInput: {
     marginRight: 5,
@@ -71,7 +80,7 @@ const useStyles = makeStyles({
     width: 50,
   },
   button: {
-    
+    width: 50,
   },
 });
 

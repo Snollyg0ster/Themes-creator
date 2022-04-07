@@ -14,3 +14,9 @@ export interface TabInfo {
 export type AddListener = typeof chrome.runtime.onMessage.addListener;
 export type CallbackParameters = Parameters<Parameters<AddListener>[0]>
 export type ExtensionListenerCallback = (...args: [Query, ...Omit<CallbackParameters, 'message'>]) => ReturnType<Parameters<AddListener>[0]>
+
+export interface Selector {
+  selectorType: string;
+  selector: string;
+  color: string;
+}

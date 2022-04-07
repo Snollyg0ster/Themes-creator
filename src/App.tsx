@@ -1,11 +1,12 @@
 import SelectorEditor from './components/SelectorEditor';
-import { Farewell, TabInfo } from './models';
+import { Farewell, Selector, TabInfo } from './models';
 import { makeStyles, sendTabMessage } from './utils';
 import reset from './assets/img/reset.png'
 import { useState } from 'react';
 
 function App() {
   const [visible, setVisible] = useState(true);
+  const [selectors, setSelectors] = useState<Selector[]>([])
 
   const makeMagic = () => {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
@@ -16,6 +17,16 @@ function App() {
       )
     }
     );
+  }
+
+  const addSelector = (selector: Selector) => {
+    let isExist = false;
+    const newSelectors = selectors.map(sel => {
+      if(sel.selector !== selector.selector) return sel;
+      isExist = true;
+      return selector
+    })
+    isExist ? setSelectors(newSelectors) : setSelectors(prev => [...prev, selector])
   }
 
   const resetAll = () => {
@@ -33,7 +44,7 @@ function App() {
             <img alt="reset" src={reset} style={styles.reset}/>
           </button>
           <h3>Lets make something!</h3>
-          <SelectorEditor />
+          <SelectorEditor addSelector={addSelector}/>
           <button onClick={makeMagic} style={styles.button}>
             <h3 style={styles.switch}>Switch</h3>(let some magic happen)
           </button>
