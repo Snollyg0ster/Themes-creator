@@ -8,6 +8,10 @@
   },
   "permissions": ["activeTab", "scripting"],
   "background": {
-    "service_worker": "background.js"
-  }
+    "service_worker": "./js/background.js"
+  },
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["./js/content.js"]
+  }]
 }
