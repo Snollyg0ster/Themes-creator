@@ -48,9 +48,10 @@ const SelectorEditor = (props: Props) => {
 const useStyles = makeStyles({
   root: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     height: 60,
-    flex: 1,
+    width: '100%',
     padding: '10px 7px',
     borderRadius: 7,
     border: '1px solid #aaaaaaff',

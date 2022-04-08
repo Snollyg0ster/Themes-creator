@@ -3,6 +3,7 @@ import { Farewell, Selector, TabInfo } from './models';
 import { makeStyles, sendTabMessage } from './utils';
 import reset from './assets/img/reset.png'
 import { useState } from 'react';
+import SelectorList from './components/SelectorList';
 
 function App() {
   const [visible, setVisible] = useState(true);
@@ -22,7 +23,7 @@ function App() {
   const addSelector = (selector: Selector) => {
     let isExist = false;
     const newSelectors = selectors.map(sel => {
-      if(sel.selector !== selector.selector) return sel;
+      if(sel.selector !== selector.selector || sel.selectorType !== selector.selectorType) return sel;
       isExist = true;
       return selector
     })
@@ -30,6 +31,7 @@ function App() {
   }
 
   const resetAll = () => {
+    setSelectors([])
     setVisible(false),
     setTimeout(() => setVisible(true))
   }
@@ -44,8 +46,9 @@ function App() {
             <img alt="reset" src={reset} style={styles.reset}/>
           </button>
           <h3>Lets make something!</h3>
+          <SelectorList selectors={selectors}/>
           <SelectorEditor addSelector={addSelector}/>
-          <button onClick={makeMagic} style={styles.button}>
+          <button id="submitStyles" onClick={makeMagic}>
             <h3 style={styles.switch}>Switch</h3>(let some magic happen)
           </button>
         </div>
@@ -59,7 +62,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '5px 15px',
+    padding: '5px 20px',
     position: 'relative',
   },
   resetButton: {
@@ -72,20 +75,6 @@ const useStyles = makeStyles({
   reset: {
     height: 15,
     width: 15
-  },
-  button: {
-    height: 40,
-    width: 200,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#eee',
-    backgroundColor: 'gray',
-    borderWidth: 0,
-    borderRadius: 7,
-    lineHeight: 0,
-    marginTop: 20,
   },
   switch: {
     marginTop: -2,
