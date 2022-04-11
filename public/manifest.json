@@ -4,14 +4,16 @@
   "version": "1.0",
   "manifest_version": 3,
   "action": {
-      "default_popup": "index.html"
+    "default_popup": "index.html"
   },
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["tabs", "activeTab", "scripting", "webNavigation", "storage"],
   "background": {
     "service_worker": "./js/background.js"
   },
-  "content_scripts": [{
-    "matches": ["http://*/*", "https://*/*"],
-    "js": ["./js/content.js"]
-  }]
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["./js/content.js"]
+    }
+  ]
 }

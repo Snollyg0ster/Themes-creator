@@ -1,1 +1,1 @@
-export {default} from './SelectorEditor';
+export { default } from "./SelectorEditor";
