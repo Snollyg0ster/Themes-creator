@@ -1,24 +1,9 @@
 import SelectorEditor from './components/SelectorEditor';
-import { Farewell, Selector } from './models';
-import { makeStyles, sendTabMessage, useStorageSync } from './utils';
+import { Selector } from './models';
+import { makeStyles, sendStyles, useStorageSync } from './utils';
 import reset from './assets/img/reset.png';
 import { useState } from 'react';
 import SelectorList from './components/SelectorList';
-
-const makeMagic = (selectors: Selector[]) => {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    tabs[0]?.id &&
-      sendTabMessage<Selector[], Farewell>(
-        tabs[0].id,
-        'tabInfo',
-        selectors,
-        (response) => {
-          console.log(response?.farewell);
-        }
-      );
-    return true;
-  });
-};
 
 function App() {
   const [visible, setVisible] = useState(true);
@@ -42,12 +27,21 @@ function App() {
       : setSelectors((prev) => [...prev, selector]);
   };
 
+  const deleteSelector = ({ selectorType, selector }: Selector) => {
+    setSelectors((selectors) =>
+      selectors.filter(
+        ({ selectorType: type, selector: pointer }) =>
+          type !== selectorType || pointer !== selector
+      )
+    );
+  };
+
   const resetAll = () => {
     setSelectors([]);
     setVisible(false), setTimeout(() => setVisible(true));
   };
 
-  const applyStyles = () => makeMagic(selectors);
+  const applyStyles = () => sendStyles(selectors);
 
   const styles = useStyles();
 
@@ -59,7 +53,7 @@ function App() {
             <img alt="reset" src={reset} style={styles.reset} />
           </button>
           <h3>Lets make something!</h3>
-          <SelectorList selectors={selectors} />
+          <SelectorList selectors={selectors} deleteSelector={deleteSelector} />
           <SelectorEditor addSelector={addSelector} />
           <button id="submitStyles" onClick={applyStyles}>
             <h3 style={styles.switch}>Switch</h3>(let some magic happen)

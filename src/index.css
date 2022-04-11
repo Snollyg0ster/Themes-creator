@@ -54,3 +54,11 @@ code {
 #submitStyles:active {
   opacity: 0.7;
 }
+
+#selectorInfo:hover > #selectorInfo_trash {
+  opacity: 1!important;
+}
+
+#selectorInfo_trash:hover {
+  background-color: rgba(0, 0, 0, 0.1)!important;
+}

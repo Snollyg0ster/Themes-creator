@@ -4,10 +4,11 @@ import SelectorInfo from '../Selector/SelectorInfo';
 
 interface Props {
   selectors: Selector[];
+  deleteSelector: (selector: Selector) => void;
 }
 
 const SelectorList = (props: Props) => {
-  const { selectors } = props;
+  const { selectors, deleteSelector } = props;
 
   const styles = useStyles();
 
@@ -17,7 +18,11 @@ const SelectorList = (props: Props) => {
         <div style={styles.root}>
           <title style={styles.title}>Selectors</title>
           {selectors.map((selector) => (
-            <SelectorInfo selector={selector} />
+            <SelectorInfo
+              selector={selector}
+              key={selector.selector + selector.selectorType}
+              deleteSelector={deleteSelector}
+            />
           ))}
         </div>
       ) : null}
