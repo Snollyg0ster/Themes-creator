@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties, useEffect, useState } from 'react';
 
 export const sendTabMessage = <M = any, R = any>(
   tabId: number,
@@ -27,16 +27,19 @@ export const useStorageSync = <T>(
   data: T,
   setData: (data: T) => void
 ) => {
-  useEffect(
-    () => () => {
-      storage.set({ [key]: data });
-    },
-    [data]
-  );
+  const [receivedData, setReceivedData] = useState<any>(undefined);
+
+  useEffect(() => {
+    receivedData === null || (receivedData && storage.set({ [key]: data }));
+  }, [data]);
 
   useEffect(() => {
     storage.get(key, (items: any) => {
-      items[key] && setData(items[key]);
+      const data = items[key];
+      setReceivedData(data || null);
+      if (data) {
+        setData(items[key]);
+      }
     });
   }, []);
 };

@@ -1,21 +1,21 @@
-import SelectorEditor from "./components/SelectorEditor";
-import { Farewell, Selector } from "./models";
-import { makeStyles, sendTabMessage, useStorageSync } from "./utils";
-import reset from "./assets/img/reset.png";
-import { useState } from "react";
-import SelectorList from "./components/SelectorList";
+import SelectorEditor from './components/SelectorEditor';
+import { Farewell, Selector } from './models';
+import { makeStyles, sendTabMessage, useStorageSync } from './utils';
+import reset from './assets/img/reset.png';
+import { useState } from 'react';
+import SelectorList from './components/SelectorList';
 
 const makeMagic = (selectors: Selector[]) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     tabs[0]?.id &&
       sendTabMessage<Selector[], Farewell>(
         tabs[0].id,
-        "tabInfo",
+        'tabInfo',
         selectors,
         (response) => {
           console.log(response?.farewell);
         }
-      ); 
+      );
     return true;
   });
 };
@@ -24,7 +24,7 @@ function App() {
   const [visible, setVisible] = useState(true);
   const [selectors, setSelectors] = useState<Selector[]>([]);
 
-  useStorageSync("selectors", selectors, setSelectors);
+  useStorageSync('selectors', selectors, setSelectors);
 
   const addSelector = (selector: Selector) => {
     let isExist = false;
@@ -72,16 +72,16 @@ function App() {
 
 const useStyles = makeStyles({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "5px 20px",
-    position: "relative",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '5px 20px',
+    position: 'relative',
   },
   resetButton: {
-    background: "transparent",
+    background: 'transparent',
     borderWidth: 0,
-    position: "absolute",
+    position: 'absolute',
     left: -3,
     opacity: 0.7,
   },
@@ -91,7 +91,7 @@ const useStyles = makeStyles({
   },
   switch: {
     marginTop: -2,
-    color: "white",
+    color: 'white',
   },
 });
 

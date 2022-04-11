@@ -1,5 +1,5 @@
-import { Selector } from "../../models";
-import { makeStyles } from "../../utils";
+import { Selector } from '../../models';
+import { makeStyles } from '../../utils';
 
 interface Props {
   selector: Selector;
@@ -22,16 +22,16 @@ const SelectorInfo = (props: Props) => {
 
 const useStyles = makeStyles({
   root: {
-    padding: "5px",
+    padding: '5px',
     borderRadius: 5,
-    border: "1px solid #aaaaaaff",
+    border: '1px solid #aaaaaaff',
     marginBottom: 7,
-    position: "relative",
+    position: 'relative',
   },
   color: {
     width: 4,
-    height: "100%",
-    position: "absolute",
+    height: '100%',
+    position: 'absolute',
     right: 0,
     top: 0,
     zIndex: -1,

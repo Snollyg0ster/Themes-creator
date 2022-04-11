@@ -1,1 +1,1 @@
-export { default } from "./SelectorInfo";
+export { default } from './SelectorInfo';

@@ -5,5 +5,5 @@ export interface Query<T = any> {
 export type AddListener = typeof chrome.runtime.onMessage.addListener;
 export type CallbackParameters = Parameters<Parameters<AddListener>[0]>;
 export type ExtensionListenerCallback = (
-  ...args: [Query, ...Omit<CallbackParameters, "message">]
+  ...args: [Query, ...Omit<CallbackParameters, 'message'>]
 ) => ReturnType<Parameters<AddListener>[0]>;

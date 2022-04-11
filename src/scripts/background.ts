@@ -1,7 +1,7 @@
 export {};
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.action?.setTitle({ title: "Новый title" });
+  chrome.action?.setTitle({ title: 'Новый title' });
 });
 
 // addExtensionListener((request, _sender, sendResponse) => {
