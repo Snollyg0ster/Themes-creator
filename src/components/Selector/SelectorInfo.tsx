@@ -28,7 +28,8 @@ const SelectorInfo = (props: Props) => {
   return (
     <div style={styles.root} id="selectorInfo" onClick={handleClick}>
       <div style={styles.text}>
-        by {selectorType} - {selector}, color - {color}
+        by <code>{selectorType}</code> - <code>{selector}</code>, color -{' '}
+        <code>{color}</code>
       </div>
       <div style={{ ...styles.color, backgroundColor: color }} />
       <button onClick={del} style={styles.trash} id="selectorInfo_trash">
