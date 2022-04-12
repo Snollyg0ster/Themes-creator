@@ -47,7 +47,6 @@ export const useStorageSync = <T>(
 
 export const sendStyles = (selectors: Selector[]) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    console.log(/.+:\/\/[^\/]+\//.exec(tabs[0]?.url || ''));
     tabs[0]?.id &&
       sendTabMessage<Selector[], Farewell>(
         tabs[0].id,

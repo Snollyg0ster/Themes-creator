@@ -34,3 +34,17 @@ export const updateElementStyle = (
         selector.color)
   );
 };
+
+export const storage = chrome.storage.local;
+
+export const someExecutions = (
+  num: number,
+  timeout: number,
+  callback: Function
+) => {
+  num &&
+    setTimeout(() => {
+      callback();
+      someExecutions(num - 1, timeout, callback);
+    }, timeout);
+};
