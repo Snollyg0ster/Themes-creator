@@ -5,7 +5,7 @@ export const addExtensionListener = chrome.runtime.onMessage.addListener as (
   ...args: [ExtensionListenerCallback]
 ) => ReturnType<AddListener>;
 
-const selectElement = ({ selectorType, selector }: Selector) => {
+const selectElements = ({ selectorType, selector }: Selector) => {
   let selectSymbol = '';
   switch (selectorType) {
     case 'id':
@@ -20,21 +20,17 @@ const selectElement = ({ selectorType, selector }: Selector) => {
     default:
       break;
   }
-  return document.querySelector(selectSymbol + selector);
+  return document.querySelectorAll(selectSymbol + selector);
 };
 
 export const updateElementStyle = (
   selector: Selector,
   styleProp = 'background'
 ) => {
-  console.log('Выбираю элемент');
-  const element = selectElement(selector);
-  console.log(
-    element
-      ? 'Выбираю элемент ' + selector.selector + element
-      : 'Нет такого перца' + selector.selector
+  const elements = selectElements(selector);
+  elements.forEach(
+    (element) =>
+      (((element as HTMLElement).style as Record<string, any>)[styleProp] =
+        selector.color)
   );
-  element &&
-    (((element as HTMLElement).style as Record<string, any>)[styleProp] =
-      selector.color);
 };

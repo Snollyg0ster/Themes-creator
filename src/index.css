@@ -59,6 +59,10 @@ code {
   opacity: 1!important;
 }
 
+#selectorList:hover > #editNote {
+  opacity: 0.7!important;
+}
+
 #selectorInfo_trash:hover {
   background-color: rgba(0, 0, 0, 0.1)!important;
 }

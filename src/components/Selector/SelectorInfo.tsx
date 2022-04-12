@@ -1,24 +1,32 @@
 import { Selector } from '../../models';
 import { makeStyles } from '../../utils';
 import trash from '../../assets/img/trash.png';
+import { MouseEvent } from 'react';
 
 interface Props {
   selector: Selector;
   deleteSelector: (selector: Selector) => void;
+  setEditedSelector: (selector: Selector | undefined) => void;
 }
 
 const SelectorInfo = (props: Props) => {
   const {
     selector: { selectorType, selector, color },
     deleteSelector,
+    setEditedSelector,
   } = props;
 
   const styles = useStyles();
 
   const del = () => deleteSelector({ selectorType, selector, color });
 
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.detail !== 2) return;
+    setEditedSelector({ selectorType, selector, color });
+  };
+
   return (
-    <div style={styles.root} id="selectorInfo">
+    <div style={styles.root} id="selectorInfo" onClick={handleClick}>
       <div style={styles.text}>
         by {selectorType} - {selector}, color - {color}
       </div>

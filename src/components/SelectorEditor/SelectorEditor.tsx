@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Selector } from '../../models';
 import { makeStyles } from '../../utils';
 
@@ -6,10 +6,11 @@ const selectorTypes: string[] = ['id', 'class', 'tag'];
 
 interface Props {
   addSelector: (selector: Selector) => void;
+  editedSelector: Selector | undefined;
 }
 
 const SelectorEditor = (props: Props) => {
-  const { addSelector } = props;
+  const { addSelector, editedSelector } = props;
   const [selectorType, setSelectorType] = useState<string>('default');
   const [selector, setSelector] = useState('');
   const [color, setColor] = useState('');
@@ -18,6 +19,15 @@ const SelectorEditor = (props: Props) => {
     () => selectorType !== 'default',
     [selectorType]
   );
+
+  useEffect(() => {
+    if (editedSelector) {
+      const { color, selectorType, selector } = editedSelector;
+      setSelector(selector);
+      setSelectorType(selectorType);
+      setColor(color);
+    }
+  }, [editedSelector]);
 
   const isDisabled = useMemo(
     () => !selector || !color || !isSelectorType,
@@ -33,8 +43,12 @@ const SelectorEditor = (props: Props) => {
   const handleColor = (event: ChangeEvent<HTMLInputElement>) =>
     setColor(event.target.value);
 
-  const handleNewSelector = () =>
+  const handleNewSelector = () => {
     addSelector({ color, selector, selectorType });
+    setSelectorType('default');
+    setSelector('');
+    setColor('');
+  };
 
   const styles = useStyles();
 

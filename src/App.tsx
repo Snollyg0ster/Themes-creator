@@ -9,6 +9,7 @@ function App() {
   const [visible, setVisible] = useState(true);
   const [selectors, setSelectors] = useState<Selector[]>([]);
   const [activeTab, setActiveTab] = useState<chrome.tabs.Tab>();
+  const [editedSelector, setEditedSelector] = useState<Selector>();
 
   const tabRootUrl = useMemo(
     () => activeTab && /.+:\/\/[^\/]+\//.exec(activeTab.url || ''),
@@ -64,8 +65,15 @@ function App() {
           </button>
           <h4 style={styles.url}>{tabRootUrl}</h4>
           <h3 style={styles.title}>Lets make something!</h3>
-          <SelectorList selectors={selectors} deleteSelector={deleteSelector} />
-          <SelectorEditor addSelector={addSelector} />
+          <SelectorList
+            selectors={selectors}
+            deleteSelector={deleteSelector}
+            setEditedSelector={setEditedSelector}
+          />
+          <SelectorEditor
+            addSelector={addSelector}
+            editedSelector={editedSelector}
+          />
           <button id="submitStyles" onClick={applyStyles}>
             <h3 style={styles.switch}>Switch</h3>(let some magic happen)
           </button>
