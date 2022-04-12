@@ -15,10 +15,10 @@ export const makeStyles =
   () =>
     styles;
 
-export const getTabId = (callback: (tabId: number) => any) =>
+export const getActiveTab = (callback: (tab: chrome.tabs.Tab) => any) =>
   chrome.tabs?.query(
     { active: true, currentWindow: true },
-    ([tab]) => tab?.id && callback(tab?.id)
+    ([tab]) => tab && callback(tab)
   );
 
 const storage = chrome.storage.local;

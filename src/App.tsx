@@ -1,13 +1,23 @@
 import SelectorEditor from './components/SelectorEditor';
 import { Selector } from './models';
-import { makeStyles, sendStyles, useStorageSync } from './utils';
+import { getActiveTab, makeStyles, sendStyles, useStorageSync } from './utils';
 import reset from './assets/img/reset.png';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import SelectorList from './components/SelectorList';
 
 function App() {
   const [visible, setVisible] = useState(true);
   const [selectors, setSelectors] = useState<Selector[]>([]);
+  const [activeTab, setActiveTab] = useState<chrome.tabs.Tab>();
+
+  const tabRootUrl = useMemo(
+    () => activeTab && /.+:\/\/[^\/]+\//.exec(activeTab.url || ''),
+    [activeTab]
+  );
+
+  useEffect(() => {
+    getActiveTab(setActiveTab);
+  }, []);
 
   useStorageSync('selectors', selectors, setSelectors);
 
@@ -52,7 +62,8 @@ function App() {
           <button style={styles.resetButton} onClick={resetAll}>
             <img alt="reset" src={reset} style={styles.reset} />
           </button>
-          <h3>Lets make something!</h3>
+          <h4 style={styles.url}>{tabRootUrl}</h4>
+          <h3 style={styles.title}>Lets make something!</h3>
           <SelectorList selectors={selectors} deleteSelector={deleteSelector} />
           <SelectorEditor addSelector={addSelector} />
           <button id="submitStyles" onClick={applyStyles}>
@@ -82,6 +93,13 @@ const useStyles = makeStyles({
   reset: {
     height: 15,
     width: 15,
+  },
+  url: {
+    marginBlock: 0,
+    color: 'gray',
+  },
+  title: {
+    marginBlockStart: '0.5em',
   },
   switch: {
     marginTop: -2,
