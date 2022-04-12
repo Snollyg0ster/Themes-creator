@@ -95,6 +95,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     padding: '5px 20px',
     position: 'relative',
+    width: 250,
   },
   resetButton: {
     background: 'transparent',

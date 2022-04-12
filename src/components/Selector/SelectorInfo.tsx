@@ -48,7 +48,8 @@ const useStyles = makeStyles({
     position: 'relative',
   },
   text: {
-    width: 'calc(100% - 16px)',
+    width: 'calc(100% - 20px)',
+    wordWrap: 'break-word',
   },
   color: {
     width: 4,

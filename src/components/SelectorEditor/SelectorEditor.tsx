@@ -116,19 +116,22 @@ const useStyles = makeStyles({
     marginBottom: 10,
   },
   editCont: {
+    flex: 1,
     display: 'flex',
     justifyContent: 'space-between',
   },
   selectorInput: {
+    minWidth: 0,
     marginRight: 5,
-    width: 90,
+    flexGrow: 3,
   },
   colorInput: {
+    minWidth: 0,
     marginRight: 5,
-    width: 50,
+    flexGrow: 2,
   },
   button: {
-    width: 50,
+    width: 60,
   },
 });
 
