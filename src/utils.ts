@@ -26,21 +26,22 @@ const storage = chrome.storage.local;
 export const useStorageSync = <T>(
   key: string,
   data: T,
-  setData: (data: T) => void
+  setData: (data: T) => void,
+  isStorageChecked?: (_: boolean, data: T | null) => void
 ) => {
-  const [receivedData, setReceivedData] = useState<any>(undefined);
+  const [receivedData, setReceivedData] = useState<any>();
 
   useEffect(() => {
-    receivedData === null || (receivedData && storage.set({ [key]: data }));
+    (receivedData === null || receivedData) && storage.set({ [key]: data });
   }, [data]);
 
   useEffect(() => {
     storage.get(key, (items: any) => {
       const data = items[key];
+      console.log('data', data);
       setReceivedData(data || null);
-      if (data) {
-        setData(items[key]);
-      }
+      data && setData(items[key]);
+      isStorageChecked && isStorageChecked(true, data || null);
     });
   }, []);
 };
@@ -59,4 +60,11 @@ export const sendStyles = (selectors: Selector[]) => {
       );
     return true;
   });
+};
+
+const rootUrlRegExp = /.+:\/\/[^\/]+(?=\/)/;
+
+export const getUrlRoot = (url: string) => {
+  const res = rootUrlRegExp.exec(url);
+  return res ? res[0] : undefined;
 };

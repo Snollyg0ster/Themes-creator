@@ -2,6 +2,7 @@ import SelectorEditor from '../../components/SelectorEditor';
 import { Selector } from '../../models';
 import {
   getActiveTab,
+  getUrlRoot,
   makeStyles,
   sendStyles,
   useStorageSync,
@@ -9,6 +10,7 @@ import {
 import reset from '../../assets/img/reset.png';
 import { useEffect, useMemo, useState } from 'react';
 import SelectorList from '../../components/SelectorList';
+import { useTabTheme } from './utils';
 
 function ThemeEditor() {
   const [visible, setVisible] = useState(true);
@@ -17,7 +19,7 @@ function ThemeEditor() {
   const [editedSelector, setEditedSelector] = useState<Selector>();
 
   const tabRootUrl = useMemo(
-    () => activeTab && /.+:\/\/[^\/]+\//.exec(activeTab.url || ''),
+    () => activeTab?.url && getUrlRoot(activeTab.url),
     [activeTab]
   );
 
@@ -25,7 +27,7 @@ function ThemeEditor() {
     getActiveTab(setActiveTab);
   }, []);
 
-  useStorageSync('selectors', selectors, setSelectors);
+  useTabTheme(tabRootUrl, selectors, setSelectors);
 
   const addSelector = (selector: Selector) => {
     let isExist = false;
