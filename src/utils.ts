@@ -38,7 +38,6 @@ export const useStorageSync = <T>(
   useEffect(() => {
     storage.get(key, (items: any) => {
       const data = items[key];
-      console.log('data', data);
       setReceivedData(data || null);
       data && setData(items[key]);
       isStorageChecked && isStorageChecked(true, data || null);

@@ -14,14 +14,8 @@ export const useTabTheme = (
     useState<(url: string) => void>();
   const [isThemesReceived, setIsThemesReceived] = useState(false);
 
-  console.log('allThemes', themes);
-
   const setOldThemes = (url: string, themes?: Theme | null) => {
-    console.log('Да могу я блин', themes, url);
-    if (url && themes && themes[url]) {
-      console.log('Да ставлю я блин', themes, themes[url]);
-      setSelectors(themes[url]);
-    }
+    url && themes && themes[url] && setSelectors(themes[url]);
     setIsThemesReceived(true);
   };
 
