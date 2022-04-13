@@ -6,6 +6,7 @@ export const addExtensionListener = chrome.runtime.onMessage.addListener as (
 ) => ReturnType<AddListener>;
 
 const selectElements = ({ selectorType, selector }: Selector) => {
+  let newSelector = selector;
   let selectSymbol = '';
   switch (selectorType) {
     case 'id':
@@ -13,14 +14,12 @@ const selectElements = ({ selectorType, selector }: Selector) => {
       break;
     case 'class':
       selectSymbol = '.';
-      break;
-    case 'tag':
-      selectSymbol = '';
+      newSelector = newSelector.split(' ').join('.');
       break;
     default:
       break;
   }
-  return document.querySelectorAll(selectSymbol + selector);
+  return document.querySelectorAll(selectSymbol + newSelector);
 };
 
 export const updateElementStyle = (

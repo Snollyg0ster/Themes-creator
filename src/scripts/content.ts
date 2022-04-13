@@ -15,7 +15,7 @@ const applySavedStyles = () => {
   if (!url) return;
   storage.get('themes', ({ themes: items }: any) => {
     if (items) {
-      someExecutions(5, 500, () => {
+      someExecutions(20, 500, () => {
         (items[url] as Selector[])?.forEach((selector) =>
           updateElementStyle(selector)
         );
