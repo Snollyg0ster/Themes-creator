@@ -41,3 +41,10 @@ export const useTabTheme = (
     setThemes({ ...themes, [url]: selectors });
   }, [selectors, url, isThemesReceived]);
 };
+
+export const colorToHex = (color: string) => {
+  let ctx = document.createElement('canvas').getContext('2d');
+  if (!ctx) return color;
+  ctx.fillStyle = color;
+  return ctx.fillStyle;
+};

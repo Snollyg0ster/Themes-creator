@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Selector } from '../../models';
+import { colorToHex } from '../../pages/ThemeEditor/utils';
 import { makeStyles } from '../../utils';
 
 const selectorTypes: string[] = ['id', 'class', 'tag'];
@@ -81,7 +82,7 @@ const SelectorEditor = (props: Props) => {
           style={styles.colorInput}
         />
         <input
-          value={color}
+          value={colorToHex(color)}
           onChange={handleColor}
           placeholder="color"
           style={styles.colorInput}
