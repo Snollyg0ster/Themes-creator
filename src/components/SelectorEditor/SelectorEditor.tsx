@@ -80,6 +80,13 @@ const SelectorEditor = (props: Props) => {
           placeholder="color"
           style={styles.colorInput}
         />
+        <input
+          value={color}
+          onChange={handleColor}
+          placeholder="color"
+          style={styles.colorInput}
+          type="color"
+        />
         <button
           style={styles.button}
           disabled={isDisabled}
