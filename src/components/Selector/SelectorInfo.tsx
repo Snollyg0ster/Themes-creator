@@ -25,11 +25,26 @@ const SelectorInfo = (props: Props) => {
     setEditedSelector({ selectorType, selector, color });
   };
 
+  const isRandom = color.includes('random');
+
   return (
     <div style={styles.root} id="selectorInfo" onClick={handleClick}>
       <div style={styles.text}>
-        by <code>{selectorType}</code> - <code>{selector}</code>, color -{' '}
-        <code>{color}</code>
+        <div>
+          by <code>{selectorType}</code> - <code>{selector}</code>
+        </div>
+        <div>
+          color -{' '}
+          {isRandom ? (
+            <>
+              <code className="rainbow">random</code>
+              <div style={{ width: 5, display: 'inline-block' }} />
+              <code>{color.slice(7)}</code>
+            </>
+          ) : (
+            <code>{color}</code>
+          )}
+        </div>
       </div>
       <div style={{ ...styles.color, backgroundColor: color }} />
       <button onClick={del} style={styles.trash} id="selectorInfo_trash">

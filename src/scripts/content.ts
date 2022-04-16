@@ -1,7 +1,8 @@
 import { Selector } from '../models';
-import { someExecutions, storage, updateElementStyle } from './utils';
+import { addExtensionListener, someExecutions } from './utils/common';
+import { storage, updateElementStyle } from './utils/styles';
 
-chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+addExtensionListener((request, _sender, sendResponse) => {
   if (request.type === 'tabInfo') {
     const selectors = request.data as Selector[];
     selectors?.forEach((selector) => updateElementStyle(selector));

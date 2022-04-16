@@ -70,3 +70,7 @@ code {
 #selectorInfo_trash:hover {
   background-color: rgba(0, 0, 0, 0.1)!important;
 }
+
+.rainbow {
+  background: linear-gradient(45deg, #ff0011, orange 35%, #fc59ffb0 40%, yellow 50%, #00d200, #3939ff 90%, #9646ff 95%);
+}
