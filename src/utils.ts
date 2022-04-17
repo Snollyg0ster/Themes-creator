@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useState } from 'react';
-import { Farewell, Selector } from './models';
+import { Farewell, Selector, SyncOptions } from './models';
 
 export const sendTabMessage = <M = any, R = any>(
   tabId: number,
@@ -10,39 +10,17 @@ export const sendTabMessage = <M = any, R = any>(
   chrome.tabs.sendMessage(tabId, { type, data: message }, responseCallback);
 };
 
-export const makeStyles =
-  <T>(styles: { [style in keyof T]: CSSProperties }) =>
-  () =>
-    styles;
-
 export const getActiveTab = (callback: (tab: chrome.tabs.Tab) => any) =>
   chrome.tabs?.query(
     { active: true, currentWindow: true },
     ([tab]) => tab && callback(tab)
   );
 
-const storage = chrome.storage.local;
+const rootUrlRegExp = /.+:\/\/[^\/]+(?=\/)/;
 
-export const useStorageSync = <T>(
-  key: string,
-  data: T,
-  setData: (data: T) => void,
-  isStorageChecked?: (_: boolean, data: T | null) => void
-) => {
-  const [receivedData, setReceivedData] = useState<any>();
-
-  useEffect(() => {
-    (receivedData === null || receivedData) && storage.set({ [key]: data });
-  }, [data]);
-
-  useEffect(() => {
-    storage.get(key, (items: any) => {
-      const data = items[key];
-      setReceivedData(data || null);
-      data && setData(items[key]);
-      isStorageChecked && isStorageChecked(true, data || null);
-    });
-  }, []);
+export const getUrlRoot = (url: string) => {
+  const res = rootUrlRegExp.exec(url);
+  return res ? res[0] : undefined;
 };
 
 export const sendStyles = (selectors: Selector[]) => {
@@ -60,9 +38,31 @@ export const sendStyles = (selectors: Selector[]) => {
   });
 };
 
-const rootUrlRegExp = /.+:\/\/[^\/]+(?=\/)/;
+const storage = chrome.storage.local;
 
-export const getUrlRoot = (url: string) => {
-  const res = rootUrlRegExp.exec(url);
-  return res ? res[0] : undefined;
+export const useStorageSync = <T, D>(
+  key: string,
+  data: T,
+  setData: (data: T) => void,
+  options: SyncOptions<T, D> = { defaultValue: null }
+) => {
+  const [receivedData, setReceivedData] = useState<any>();
+
+  useEffect(() => {
+    (receivedData === null || receivedData) && storage.set({ [key]: data });
+  }, [data]);
+
+  useEffect(() => {
+    storage.get(key, (items: any) => {
+      const data = items[key];
+      setReceivedData(data || null);
+      data && setData(items[key]);
+      options?.onSync && options.onSync(data || options?.defaultValue);
+    });
+  }, []);
 };
+
+export const makeStyles =
+  <T>(styles: { [style in keyof T]: CSSProperties }) =>
+  () =>
+    styles;

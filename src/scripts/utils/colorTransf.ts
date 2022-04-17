@@ -38,8 +38,8 @@ const colorTransition = (
   element?.classList.add('secondTS' + id);
 };
 
-const colorInterpolation = (c1: RGB, c2: RGB, fraction: number) =>
-  c1.map((c, i) => (c2[i] - c) * fraction + c);
+// const colorInterpolation = (c1: RGB, c2: RGB, fraction: number) =>
+//   c1.map((c, i) => (c2[i] - c) * fraction + c);
 
 export const randomRGB = (minIntensity: number, maxIntensity: number) => {
   const rgb = Array.from({ length: 3 }, () =>
@@ -63,7 +63,6 @@ export const randomColorsInterpolation = (
   const [, minIntensity, maxIntensity, speed = 1000] = command
     .split(' ')
     .map((el, i) => (i ? +el : el)) as [string, ...number[]];
-  console.log(minIntensity, maxIntensity);
   const id = selectorType + selector.split(' ').join('');
 
   if (isNaN(minIntensity) || isNaN(maxIntensity) || isNaN(speed)) return;

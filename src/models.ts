@@ -12,3 +12,10 @@ export interface Selector {
   selector: string;
   color: string;
 }
+
+export interface SyncOptions<T, D> {
+  //function that will be executed when data from storage will be received
+  onSync?: (data: T | D) => void;
+  //value that onSync function will return if there is no prerecorded value
+  defaultValue?: D | null;
+}

@@ -1,7 +1,10 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+
 import { Selector } from '../../models';
 import { colorToHex } from '../../pages/ThemeEditor/utils';
 import { makeStyles } from '../../utils';
+import Aim from './components/Aim';
+import done from '../../assets/img/done.png';
 
 const selectorTypes: string[] = ['id', 'class', 'tag'];
 
@@ -56,18 +59,21 @@ const SelectorEditor = (props: Props) => {
   return (
     <div style={styles.root}>
       <title style={styles.title}>Add selector</title>
-      <select
-        value={selectorType}
-        onChange={handleSelectorType}
-        style={{ ...styles.select, color: isSelectorType ? 'black' : 'gray' }}
-      >
-        {selectorTypes.map((selector) => (
-          <option value={selector}>{selector}</option>
-        ))}
-        <option value={'default'} disabled hidden>
-          select by
-        </option>
-      </select>
+      <div style={styles.editCont}>
+        <select
+          value={selectorType}
+          onChange={handleSelectorType}
+          style={{ ...styles.select, color: isSelectorType ? 'black' : 'gray' }}
+        >
+          {selectorTypes.map((selector) => (
+            <option value={selector}>{selector}</option>
+          ))}
+          <option value={'default'} disabled hidden>
+            select by
+          </option>
+        </select>
+        <Aim />
+      </div>
       <div style={styles.editCont}>
         <input
           value={selector}
@@ -85,15 +91,15 @@ const SelectorEditor = (props: Props) => {
           value={colorToHex(color)}
           onChange={handleColor}
           placeholder="color"
-          style={styles.colorInput}
+          style={styles.colorSelector}
           type="color"
         />
         <button
-          style={styles.button}
+          style={styles.done}
           disabled={isDisabled}
           onClick={handleNewSelector}
         >
-          +
+          <img alt="add" src={done} style={styles.img} />
         </button>
       </div>
     </div>
@@ -121,7 +127,11 @@ const useStyles = makeStyles({
     padding: '0 3px',
   },
   select: {
+    minWidth: 0,
     marginBottom: 10,
+    marginRight: 5,
+    height: 23,
+    flex: 8,
   },
   editCont: {
     flex: 1,
@@ -131,15 +141,23 @@ const useStyles = makeStyles({
   selectorInput: {
     minWidth: 0,
     marginRight: 5,
-    flexGrow: 3,
+    flex: 3,
   },
   colorInput: {
     minWidth: 0,
     marginRight: 5,
-    flexGrow: 2,
+    flex: 3,
   },
-  button: {
-    width: 60,
+  colorSelector: {
+    flex: 1,
+    marginRight: 5,
+  },
+  done: {
+    flex: 1,
+  },
+  img: {
+    height: 15,
+    width: 15,
   },
 });
 

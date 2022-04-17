@@ -1,11 +1,15 @@
 import { Selector } from '../models';
 import { addExtensionListener, someExecutions } from './utils/common';
+import { pointer } from './utils/pointer';
 import { storage, updateElementStyle } from './utils/styles';
 
 addExtensionListener((request, _sender, sendResponse) => {
   if (request.type === 'tabInfo') {
     const selectors = request.data as Selector[];
     selectors?.forEach((selector) => updateElementStyle(selector));
+  }
+  if (request.type === 'pointer') {
+    pointer(request.data);
   }
   sendResponse({ farewell: 'styles received' });
   return true;

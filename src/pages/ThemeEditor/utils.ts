@@ -19,10 +19,7 @@ export const useTabTheme = (
     setIsThemesReceived(true);
   };
 
-  const archiveOrApplyTheme = (
-    _: boolean,
-    themes?: Theme | null | undefined
-  ) => {
+  const archiveOrApplyTheme = (themes?: Theme | null) => {
     url
       ? setOldThemes(url, themes)
       : setThemesReceivedCallback(
@@ -30,7 +27,7 @@ export const useTabTheme = (
         );
   };
 
-  useStorageSync('themes', themes, setThemes, archiveOrApplyTheme);
+  useStorageSync('themes', themes, setThemes, { onSync: archiveOrApplyTheme });
 
   useEffect(() => {
     if (!url) return;
