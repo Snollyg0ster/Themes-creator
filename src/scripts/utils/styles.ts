@@ -18,7 +18,7 @@ const selectElements = ({ selectorType, selector }: Selector) => {
   return document.querySelectorAll(selectSymbol + newSelector);
 };
 
-const randomColorElements = new Set();
+const randomColorElements: Record<string, any> = {};
 
 export const updateElementStyle = (
   selector: Selector,
@@ -27,9 +27,15 @@ export const updateElementStyle = (
   const elements = selectElements(selector);
   elements.forEach((element) => {
     if (selector.color.includes('random')) {
-      if (randomColorElements.has(selector)) return;
-      randomColorElements.add(selector);
-      randomColorsInterpolation(element, selector, selector.color);
+      let id = selector.selectorType + selector.selector;
+      if (randomColorElements[id]) return;
+      randomColorElements[id] = id;
+      randomColorsInterpolation(
+        element,
+        selector,
+        selector.color,
+        Object.keys(randomColorElements).length - 1
+      );
       return;
     }
     applyColor(element, selector.color, styleProp);

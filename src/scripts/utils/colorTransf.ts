@@ -12,30 +12,38 @@ export const applyColor = (
   (((element as HTMLElement).style as Record<string, any>)[styleProp] =
     selector);
 
+let styleSheetNumber = 0;
+
 const colorTransition = (
   element: Element,
-  id: string,
+  id: number,
   color: string,
-  time: number
+  time: number,
+  property = 'background'
 ) => {
-  $(`[title="myStyles${id}"]`)?.remove();
-
-  const style = document.createElement('style');
-  style.title = `myStyles${id}`;
-  style.innerHTML = `
-    .firstTS${id} {
-      transition: background ${time}ms;
+  let style = $(`[title="CTThemeStyles"]`) as HTMLStyleElement;
+  if (!style) {
+    style = document.createElement('style');
+    style.title = `CTThemeStyles`;
+    const head = $('head');
+    head?.appendChild(style);
+    for (let i = 0; i < document.styleSheets.length; i++) {
+      if (document.styleSheets[i].title === 'CTThemeStyles') {
+        styleSheetNumber = i;
+      }
     }
-    .secondTS${id} {
-      background: ${color};
-    }
-  `;
-
-  const head = $('head');
-  head?.appendChild(style);
-
-  element?.classList.add('firstTS' + id);
-  element?.classList.add('secondTS' + id);
+  }
+  const styleSheet = document.styleSheets[styleSheetNumber];
+  const rules = styleSheet.cssRules || styleSheet?.rules;
+  const cssText = `.TS-${id} { transition: ${property} ${time}ms; ${property}: ${color}; }`;
+  if (!rules[id]) {
+    styleSheet.insertRule(cssText, id);
+  } else {
+    const rule = rules[id] as any;
+    rule.style.transition = `${property} ${time}ms`;
+    rule.style[property] = color;
+  }
+  element?.classList.add('TS-' + id);
 };
 
 // const colorInterpolation = (c1: RGB, c2: RGB, fraction: number) =>
@@ -58,12 +66,12 @@ export const rgbToRgbaString = (color: number[], alpha = 255) =>
 export const randomColorsInterpolation = (
   element: Element,
   { selector, selectorType }: Selector,
-  command: string
+  command: string,
+  id: number
 ) => {
   const [, minIntensity, maxIntensity, speed = 1000] = command
     .split(' ')
     .map((el, i) => (i ? +el : el)) as [string, ...number[]];
-  const id = selectorType + selector.split(' ').join('');
 
   if (isNaN(minIntensity) || isNaN(maxIntensity) || isNaN(speed)) return;
 
