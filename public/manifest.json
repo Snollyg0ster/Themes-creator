@@ -1,6 +1,6 @@
 {
-  "name": "Getting Started Example",
-  "description": "Build an Extension!",
+  "name": "Themes creator",
+  "description": "Help to customize website styles",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
