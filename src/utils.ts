@@ -1,20 +1,5 @@
 import { CSSProperties, useEffect, useState } from 'react';
-import { Farewell, Selector, SyncOptions } from './models';
-
-export const sendTabMessage = <M = any, R = any>(
-  tabId: number,
-  type: string,
-  message: M,
-  responseCallback?: (response: R) => void
-) => {
-  chrome.tabs.sendMessage(tabId, { type, data: message }, responseCallback);
-};
-
-export const getActiveTab = (callback: (tab: chrome.tabs.Tab) => any) =>
-  chrome.tabs?.query(
-    { active: true, currentWindow: true },
-    ([tab]) => tab && callback(tab)
-  );
+import { SyncOptions, ActiveTabMessageProps } from './models';
 
 const rootUrlRegExp = /.+:\/\/[^\/]+(?=\/)/;
 
@@ -23,19 +8,26 @@ export const getUrlRoot = (url: string) => {
   return res ? res[0] : undefined;
 };
 
-export const sendStyles = (selectors: Selector[]) => {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    tabs[0]?.id &&
-      sendTabMessage<Selector[], Farewell>(
-        tabs[0].id,
-        'tabInfo',
-        selectors,
-        (response) => {
-          console.log(response?.farewell);
-        }
-      );
-    return true;
+export const sendTabMessage = <M = any, R = any>(
+  tabId: number,
+  ...[type, message, responseCallback]: ActiveTabMessageProps
+) => {
+  chrome.tabs.sendMessage(tabId, { type, data: message }, responseCallback);
+};
+
+export const getActiveTab = (
+  callback: (tab: chrome.tabs.Tab) => any,
+  async = true
+) =>
+  chrome.tabs?.query({ active: true, currentWindow: true }, ([tab]) => {
+    tab && callback(tab);
+    if (async) return true;
   });
+
+export const sendActiveTabMessage = <M = any, R = any>(
+  ...props: ActiveTabMessageProps
+) => {
+  getActiveTab((tab) => tab.id && sendTabMessage<M, R>(tab.id, ...props));
 };
 
 const storage = chrome.storage.local;

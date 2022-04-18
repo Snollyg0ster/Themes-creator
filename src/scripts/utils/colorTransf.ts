@@ -42,6 +42,7 @@ const colorTransition = (
     const rule = rules[id] as any;
     rule.style.transition = `${property} ${time}ms`;
     rule.style[property] = color;
+    // + '!important';
   }
   element?.classList.add('TS-' + id);
 };

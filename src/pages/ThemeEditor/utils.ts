@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Selector } from '../../models';
-import { useStorageSync } from '../../utils';
+import { Farewell, Selector } from '../../models';
+import { sendActiveTabMessage, useStorageSync } from '../../utils';
 
 export type Theme = Record<string, Selector[]>;
 
@@ -45,3 +45,12 @@ export const colorToHex = (color: string) => {
   ctx.fillStyle = color;
   return ctx.fillStyle;
 };
+
+export const sendStyles = (selectors: Selector[]) =>
+  sendActiveTabMessage<Selector[], Farewell>(
+    'tabInfo',
+    selectors,
+    (response) => {
+      console.log(response?.farewell);
+    }
+  );

@@ -1,10 +1,10 @@
 import SelectorEditor from '../../components/SelectorEditor';
 import { Selector } from '../../models';
-import { getActiveTab, getUrlRoot, makeStyles, sendStyles } from '../../utils';
+import { getActiveTab, getUrlRoot, makeStyles } from '../../utils';
 import reset from '../../assets/img/reset.png';
 import { useEffect, useMemo, useState } from 'react';
 import SelectorList from '../../components/SelectorList';
-import { useTabTheme } from './utils';
+import { sendStyles, useTabTheme } from './utils';
 
 function ThemeEditor() {
   const [visible, setVisible] = useState(true);

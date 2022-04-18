@@ -1,3 +1,5 @@
+export type ValueOf<T> = T[keyof T];
+
 export interface Query<T = any> {
   type: string;
   data: T;
@@ -19,3 +21,9 @@ export interface SyncOptions<T, D> {
   //value that onSync function will return if there is no prerecorded value
   defaultValue?: D | null;
 }
+
+export type ActiveTabMessageProps<M = any, R = any> = [
+  type: string,
+  message: M,
+  responseCallback?: (response: R) => void
+];
